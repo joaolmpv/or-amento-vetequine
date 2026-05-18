@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orçamento — Coutinho Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --preto: #0E0E0E;
+    --preto-soft: #1A1A1A;
+    --dourado: #C49A3C;
+    --dourado-claro: #F5EDD6;
+    --dourado-mid: #EDD89A;
+    --bege: #F8F4EE;
+    --bege-dark: #EDE8E0;
+    --cinza: #6B6660;
+    --cinza-claro: #F0EDE8;
+    --texto: #1A1714;
+    --texto-suave: #8A8078;
+    --borda: rgba(0,0,0,0.08);
+    --branco: #FFFFFF;
+    --verde-wa: #25D366;
+    --rosa-ig: #E1306C;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bege);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--preto);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    z-index: 1;
+    pointer-events: none;
+  }
+  .header-glow {
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(196,154,60,0.12) 0%, transparent 65%);
+    top: -150px; right: -100px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .header-line {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--dourado), transparent);
+    z-index: 2;
+  }
+  .header-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 4rem 2rem 3.5rem;
+    position: relative;
+    z-index: 3;
+  }
+  .header-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .eyebrow-line {
+    width: 28px; height: 1px;
+    background: var(--dourado);
+  }
+  .eyebrow-text {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dourado);
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--dourado);
+  }
+  header p.subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 500px;
+    line-height: 1.65;
+    font-weight: 300;
+    margin-top: 0.75rem;
+  }
+  .header-chips {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    font-weight: 400;
+    padding: 5px 12px;
+    border-radius: 100px;
+  }
+  .chip .chip-dot {
+    width: 5px; height: 5px;
+    background: var(--dourado);
+    border-radius: 50%;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 0.9rem;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--branco);
+    border-radius: 14px;
+    border: 1px solid var(--borda);
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.1rem;
+  }
+  .card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--texto);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── VALUE HERO ── */
+  .value-hero {
+    background: var(--preto);
+    border-radius: 18px;
+    padding: 2.5rem 2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .value-hero::before {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(196,154,60,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .value-hero .label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px; font-weight: 300; letter-spacing: 0.05em; }
+  .value-hero .total {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dourado);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .value-hero .desc { font-size: 12.5px; color: rgba(255,255,255,0.4); margin-top: 8px; font-weight: 300; }
+  .value-split { display: flex; gap: 1rem; flex-wrap: wrap; position: relative; z-index: 2; }
+  .value-split-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(196,154,60,0.2);
+    border-radius: 10px;
+    padding: 0.9rem 1.2rem;
+    min-width: 130px;
+  }
+  .value-split-item .s-label { font-size: 11px; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+  .value-split-item .s-val { font-size: 1.3rem; font-weight: 600; color: #fff; }
+  .value-split-item .s-sub { font-size: 11px; color: rgba(196,154,60,0.7); margin-top: 3px; }
+
+  /* ── AVISO PRAZO ── */
+  .aviso-prazo {
+    background: var(--dourado-claro);
+    border: 1px solid rgba(196,154,60,0.3);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    font-size: 13px;
+    color: #7A5C10;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 1.1rem;
+    line-height: 1.55;
+  }
+  .aviso-prazo svg { flex-shrink: 0; margin-top: 1px; }
+
+  /* ── PAGAMENTO TABS ── */
+  .modalidade-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1.5px solid var(--cinza-claro);
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    padding: 0.5rem 1.1rem 0.8rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1.5px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn.active { color: var(--preto); border-bottom-color: var(--dourado); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── PARCELAS ── */
+  .prazo-info {
+    background: #FBF7EE;
+    border: 1px solid rgba(196,154,60,0.2);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    font-size: 13px;
+    color: #7A5C10;
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.55;
+  }
+  .prazo-info svg { flex-shrink: 0; margin-top: 1px; }
+
+  .parcelas-wrap { overflow-x: auto; }
+  table.parcelas { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.parcelas thead th {
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--texto-suave);
+    padding: 0 0.8rem 0.75rem;
+    border-bottom: 1.5px solid var(--bege-dark);
+  }
+  table.parcelas tbody tr { transition: background 0.15s; }
+  table.parcelas tbody tr:hover { background: var(--dourado-claro); }
+  table.parcelas tbody td { padding: 0.75rem 0.8rem; border-bottom: 1px solid var(--borda); color: var(--texto); }
+  table.parcelas tbody tr.entrada-row td { font-weight: 600; color: var(--preto); }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 100px;
+  }
+  .badge-entrada { background: #EDD89A; color: #5C3D00; }
+  .badge-parcela { background: var(--cinza-claro); color: var(--cinza); }
+  td.val { font-weight: 600; }
+  .total-row td {
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 2px solid var(--bege-dark);
+    border-bottom: none;
+    padding-top: 1rem;
+    color: var(--preto);
+  }
+
+  /* ── ESCOPO GRID ── */
+  .escopo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.85rem;
+  }
+  .escopo-item {
+    border: 1px solid var(--borde);
+    border-radius: 11px;
+    padding: 1rem 1.1rem;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bege);
+    border: 1px solid var(--bege-dark);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .escopo-item:hover { border-color: rgba(196,154,60,0.35); box-shadow: 0 2px 12px rgba(196,154,60,0.08); }
+  .escopo-icon {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    background: var(--preto);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .escopo-icon svg { width: 16px; height: 16px; stroke: var(--dourado); }
+  .escopo-item h3 { font-size: 13.5px; font-weight: 600; color: var(--texto); margin-bottom: 3px; }
+  .escopo-item p { font-size: 12px; color: var(--texto-suave); line-height: 1.5; }
+
+  /* ── INTEGRAÇÕES ── */
+  .integ-row {
+    display: flex;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+  .integ-card {
+    flex: 1;
+    min-width: 200px;
+    border-radius: 11px;
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border: 1px solid var(--bege-dark);
+    background: var(--bege);
+  }
+  .integ-card.wa { border-color: rgba(37,211,102,0.25); background: #F0FBF4; }
+  .integ-card.ig { border-color: rgba(225,48,108,0.2); background: #FDF0F4; }
+  .integ-icon-wrap {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .integ-icon-wrap.wa { background: #25D366; }
+  .integ-icon-wrap.ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .integ-icon-wrap svg { width: 18px; height: 18px; fill: white; }
+  .integ-card h3 { font-size: 13.5px; font-weight: 600; color: var(--texto); margin-bottom: 3px; }
+  .integ-card p { font-size: 12px; color: var(--texto-suave); line-height: 1.5; }
+
+  /* ── CRONOGRAMA ── */
+  .crono-wrap { position: relative; padding-left: 2.5rem; }
+  .crono-line {
+    position: absolute;
+    left: 10px; top: 8px; bottom: 8px;
+    width: 1.5px;
+    background: linear-gradient(180deg, var(--dourado) 0%, var(--bege-dark) 100%);
+  }
+  .crono-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  .crono-item:last-child { margin-bottom: 0; }
+  .crono-dot {
+    position: absolute;
+    left: -2.5rem;
+    top: 2px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--preto);
+    border: 2px solid var(--dourado);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .crono-dot span { font-size: 8px; font-weight: 700; color: var(--dourado); }
+  .crono-item strong { display: block; font-size: 14px; font-weight: 600; color: var(--texto); margin-bottom: 2px; }
+  .crono-item .crono-period {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dourado);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .crono-item p { font-size: 12.5px; color: var(--texto-suave); line-height: 1.55; }
+
+  /* ── TÉCNICO ── */
+  .tec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+  .tec-item {
+    background: var(--bege);
+    border: 1px solid var(--bege-dark);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+  }
+  .tec-item .tec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--texto-suave); margin-bottom: 4px; }
+  .tec-item .tec-val { font-size: 13.5px; font-weight: 500; color: var(--texto); }
+
+  /* ── CONDIÇÕES ── */
+  .cond-list { list-style: none; }
+  .cond-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 0.6rem 0;
+    font-size: 14px;
+    color: var(--texto-suave);
+    border-bottom: 1px solid var(--borda);
+    line-height: 1.55;
+  }
+  .cond-list li:last-child { border-bottom: none; }
+  .cond-list li svg { flex-shrink: 0; margin-top: 2px; }
+
+  /* ── FOOTER ── */
+  .footer-card {
+    background: var(--preto);
+    border-radius: 14px;
+    padding: 2rem;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .footer-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--dourado), transparent);
+  }
+  .footer-card p.footer-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .footer-card p.footer-title em { font-style: italic; color: var(--dourado); }
+  .footer-card p.footer-sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 1.5rem; font-weight: 300; }
+  .footer-divider { width: 40px; height: 1px; background: var(--dourado); margin: 1rem auto; opacity: 0.5; }
+  .footer-info { font-size: 12px; color: rgba(255,255,255,0.35); }
+
+  @media (max-width: 600px) {
+    .value-hero { flex-direction: column; }
+    .tec-grid { grid-template-columns: 1fr; }
+    .card { padding: 1.25rem 1.1rem; }
+    header h1 { font-size: 2.2rem; }
+    .main { padding: 1.5rem 1rem 3rem; }
+    .tab-btn { font-size: 12.5px; padding: 0.5rem 0.7rem 0.8rem; }
+    .crono-wrap { padding-left: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-noise"></div>
+  <div class="header-glow"></div>
+  <div class="header-line"></div>
+  <div class="header-inner">
+    <div class="header-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Proposta Comercial · 2026</span>
+    </div>
+    <h1>Loja Online<br><em>Coutinho Store</em></h1>
+    <p class="subtitle">E-commerce completo com catálogo, carrinho, pagamento integrado e painel administrativo — pensado para vender mais e gerenciar com facilidade.</p>
+    <div class="header-chips">
+      <div class="chip"><span class="chip-dot"></span> E-commerce Completo</div>
+      <div class="chip"><span class="chip-dot"></span> Painel Admin</div>
+      <div class="chip"><span class="chip-dot"></span> WhatsApp + Instagram</div>
+      <div class="chip"><span class="chip-dot"></span> 40 a 60 dias de entrega</div>
+    </div>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- VALOR HERO -->
+  <div class="value-hero">
+    <div>
+      <div class="label">Investimento total</div>
+      <div class="total">R$ 4.000</div>
+      <div class="desc">E-commerce completo da Coutinho Store — pronto para vender</div>
+    </div>
+    <div class="value-split">
+      <div class="value-split-item">
+        <div class="s-label">Entrada</div>
+        <div class="s-val">R$ 1.000</div>
+        <div class="s-sub">No ato da contratação</div>
+      </div>
+      <div class="value-split-item">
+        <div class="s-label">Restante</div>
+        <div class="s-val">R$ 3.000</div>
+        <div class="s-sub">3× de R$ 1.000</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AVISO PRAZO -->
+  <div class="aviso-prazo">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span><strong>Prazo de entrega: 40 a 60 dias corridos</strong> a partir da confirmação da entrada e do envio dos materiais necessários (logo, fotos dos produtos, textos e acessos). A entrega pode ocorrer antes do prazo máximo conforme o andamento das etapas.</span>
+  </div>
+
+  <!-- PAGAMENTO -->
+  <div class="card">
+    <p class="section-label">Condições de pagamento</p>
+    <h2>Forma de pagamento</h2>
+
+    <div class="prazo-info">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Entrada de R$&nbsp;1.000 para início imediato + 3 parcelas mensais de R$&nbsp;1.000 nos meses de julho, agosto e setembro de 2026. Sem juros.</span>
+    </div>
+
+    <div class="parcelas-wrap">
+      <table class="parcelas">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Vencimento</th>
+            <th>Descrição</th>
+            <th style="text-align:right">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="entrada-row">
+            <td><span class="badge badge-entrada">Entrada</span></td>
+            <td>No ato da contratação</td>
+            <td>Sinal — início do desenvolvimento</td>
+            <td style="text-align:right" class="val">R$ 1.000,00</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-parcela">1/3</span></td>
+            <td>Julho/2026</td>
+            <td>1ª parcela — desenvolvimento em andamento</td>
+            <td style="text-align:right" class="val">R$ 1.000,00</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-parcela">2/3</span></td>
+            <td>Agosto/2026</td>
+            <td>2ª parcela — desenvolvimento em andamento</td>
+            <td style="text-align:right" class="val">R$ 1.000,00</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-parcela">3/3</span></td>
+            <td>Setembro/2026</td>
+            <td>3ª parcela — entrega e publicação</td>
+            <td style="text-align:right" class="val">R$ 1.000,00</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="3">Total do projeto</td>
+            <td style="text-align:right">R$ 4.000,00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ESCOPO -->
+  <div class="card">
+    <p class="section-label">Escopo do projeto</p>
+    <h2>O que será desenvolvido</h2>
+    <div class="escopo-grid">
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <div>
+          <h3>Página Inicial</h3>
+          <p>Home atrativa com banner, destaques, categorias e chamadas de ação (CTA) para converter visitantes em compradores</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M6 7h.01M10 7h8"/><path d="M6 11h.01M10 11h8"/></svg>
+        </div>
+        <div>
+          <h3>Catálogo de Produtos</h3>
+          <p>Vitrine com filtros por categoria, tamanho, cor e preço. Busca inteligente e ordenação por relevância ou preço</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div>
+          <h3>Página da Peça</h3>
+          <p>Fotos em galeria, seleção de tamanho/cor, descrição completa, tabela de medidas, botão de compra e WhatsApp direto</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <div>
+          <h3>Carrinho e Checkout</h3>
+          <p>Carrinho com resumo, cálculo de frete, cupons de desconto e checkout seguro com múltiplas formas de pagamento</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div>
+          <h3>Pagamento Online</h3>
+          <p>Integração com gateway de pagamento (Mercado Pago ou Pagar.me) — Pix, cartão de crédito/débito e boleto bancário</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div>
+          <h3>Painel Administrativo</h3>
+          <p>Área exclusiva para adicionar, editar e remover produtos, gerenciar pedidos, ver relatórios de vendas e controlar estoque</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <h3>WhatsApp Business</h3>
+          <p>Botão flutuante em todo o site, envio automático do carrinho para o WhatsApp e link direto para dúvidas sobre pedidos</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div>
+          <h3>Feed do Instagram</h3>
+          <p>Exibição automática das últimas publicações do Instagram na página inicial, mantendo o site sempre atualizado e dinâmico</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div>
+          <h3>SEO e Performance</h3>
+          <p>Otimização para Google (meta tags, URLs amigáveis, sitemap), carregamento rápido, responsivo em mobile e compressão de imagens</p>
+        </div>
+      </div>
+
+      <div class="escopo-item">
+        <div class="escopo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <h3>SSL e Segurança</h3>
+          <p>Certificado SSL (HTTPS), proteção de dados dos clientes, conformidade com a LGPD e backup automático</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INTEGRAÇÕES -->
+  <div class="card">
+    <p class="section-label">Integrações sociais</p>
+    <h2>WhatsApp e Instagram conectados</h2>
+    <div class="integ-row">
+      <div class="integ-card wa">
+        <div class="integ-icon-wrap wa">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div>
+        <div>
+          <h3>WhatsApp Business</h3>
+          <p>Botão flutuante, envio de carrinho por mensagem, notificação de pedido confirmado e atendimento rápido ao cliente diretamente pelo WhatsApp da loja</p>
+        </div>
+      </div>
+      <div class="integ-card ig">
+        <div class="integ-icon-wrap ig">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </div>
+        <div>
+          <h3>Feed do Instagram</h3>
+          <p>Exibição automática das últimas publicações do Instagram na home da loja, mantendo o site dinâmico e alinhado com o perfil da marca nas redes sociais</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STACK TÉCNICO -->
+  <div class="card">
+    <p class="section-label">Estrutura técnica</p>
+    <h2>Tecnologias e infraestrutura</h2>
+    <div class="tec-grid" style="margin-bottom: 1.1rem;">
+      <div class="tec-item">
+        <div class="tec-label">Frontend</div>
+        <div class="tec-val">Next.js + Tailwind CSS</div>
+      </div>
+      <div class="tec-item">
+        <div class="tec-label">Backend / CMS</div>
+        <div class="tec-val">Node.js + Banco de dados na nuvem</div>
+      </div>
+      <div class="tec-item">
+        <div class="tec-label">Pagamentos</div>
+        <div class="tec-val">Mercado Pago ou Pagar.me</div>
+      </div>
+      <div class="tec-item">
+        <div class="tec-label">Hospedagem</div>
+        <div class="tec-val">Vercel + banco em nuvem</div>
+      </div>
+      <div class="tec-item">
+        <div class="tec-label">Domínio + SSL</div>
+        <div class="tec-val">HTTPS incluso, domínio a contratar</div>
+      </div>
+      <div class="tec-item">
+        <div class="tec-label">Frete</div>
+        <div class="tec-val">API dos Correios ou Jadlog</div>
+      </div>
+      <div class="tec-item">
+        <div class="tec-label">Compatibilidade</div>
+        <div class="tec-val">Mobile, tablet e desktop</div>
+      </div>
+      <div class="tec-item">
+        <div class="tec-label">Painel Admin</div>
+        <div class="tec-val">Interface web exclusiva da loja</div>
+      </div>
+    </div>
+    <p style="font-size:12.5px; color:var(--texto-suave); line-height:1.6;">A stack escolhida garante performance superior, segurança, escalabilidade e facilidade de manutenção. O painel administrativo é uma interface web dedicada — sem necessidade de conhecimento técnico para gerenciar produtos e pedidos.</p>
+  </div>
+
+  <!-- CRONOGRAMA -->
+  <div class="card">
+    <p class="section-label">Prazo e entregas</p>
+    <h2>Cronograma de desenvolvimento</h2>
+    <div class="crono-wrap">
+      <div class="crono-line"></div>
+
+      <div class="crono-item">
+        <div class="crono-dot"><span>1</span></div>
+        <div class="crono-period">Semana 1 — Kickoff</div>
+        <strong>Briefing e planejamento</strong>
+        <p>Coleta de materiais (logo, fotos, textos, cores da marca), definição da identidade visual do site, mapeamento das categorias e aprovação do protótipo de layout.</p>
+      </div>
+
+      <div class="crono-item">
+        <div class="crono-dot"><span>2</span></div>
+        <div class="crono-period">Semanas 2–3</div>
+        <strong>Design e estrutura base</strong>
+        <p>Desenvolvimento da home, catálogo e página de produto. Configuração do banco de dados, estrutura de categorias e primeira versão do painel administrativo.</p>
+      </div>
+
+      <div class="crono-item">
+        <div class="crono-dot"><span>3</span></div>
+        <div class="crono-period">Semanas 3–5</div>
+        <strong>Carrinho, pagamento e integrações</strong>
+        <p>Implementação do carrinho, checkout, integração com gateway de pagamento (Pix, cartão, boleto), cálculo de frete, WhatsApp Business e feed do Instagram.</p>
+      </div>
+
+      <div class="crono-item">
+        <div class="crono-dot"><span>4</span></div>
+        <div class="crono-period">Semanas 5–7</div>
+        <strong>Painel admin, testes e ajustes</strong>
+        <p>Painel completo para gestão de produtos e pedidos, testes de fluxo de compra, ajustes de responsividade em todos os dispositivos, otimização de SEO e performance.</p>
+      </div>
+
+      <div class="crono-item">
+        <div class="crono-dot"><span>5</span></div>
+        <div class="crono-period">Semanas 7–9 — Entrega</div>
+        <strong>Homologação e publicação</strong>
+        <p>Validação final com a Coutinho Store, publicação no domínio definitivo, configuração de SSL, treinamento para uso do painel e suporte pós-entrega.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONDIÇÕES -->
+  <div class="card">
+    <p class="section-label">Condições comerciais</p>
+    <h2>O que está incluso</h2>
+    <ul class="cond-list">
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Página inicial</strong> com banner principal, seção de destaques, categorias e feed do Instagram
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Catálogo completo</strong> com filtros por categoria, busca, ordenação e vitrine responsiva
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Página individual de cada peça</strong> com galeria de fotos, variações (tamanho/cor), tabela de medidas e botão de compra
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Carrinho e checkout</strong> com cálculo de frete, cupons de desconto e pagamento via Pix, cartão e boleto
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Integração WhatsApp Business</strong> com botão flutuante e envio de carrinho por mensagem
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Feed do Instagram</strong> exibido automaticamente na home da loja
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Painel administrativo</strong> para adicionar, editar e remover produtos, gerenciar pedidos e acompanhar vendas
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">SEO, SSL e responsividade</strong> — site otimizado para Google, seguro (HTTPS) e perfeito em qualquer tela
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#C49A3C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <strong style="color:var(--texto);">Treinamento e suporte</strong> pós-entrega para uso do painel e correção de eventuais bugs
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#BA7517" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Custo de hospedagem, domínio e taxas do gateway de pagamento <strong>não inclusos</strong> — a contratar separadamente (valores baixos e acessíveis)</span>
+      </li>
+      <li>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#BA7517" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>O prazo de 40–60 dias tem como ponto de partida o <strong>recebimento dos materiais</strong> (fotos, logo, textos) pela Coutinho Store</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-card">
+    <p class="footer-title"><em>Coutinho Store</em> — pronta para vender online</p>
+    <p class="footer-sub">E-commerce completo · Entrega em 40 a 60 dias · R$ 4.000 em 4× sem juros</p>
+    <div class="footer-divider"></div>
+    <p class="footer-info">Proposta válida por 15 dias · 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
